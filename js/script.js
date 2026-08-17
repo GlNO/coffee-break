@@ -15,7 +15,7 @@ let timerInterval = null;
 const modeButtons = document.querySelectorAll(".mode-button");
 
 const defaultDurations = {
-    focus: 25 * 60,
+    focus: 5,
     shortBreak: 5 * 60,
     longBreak: 15 * 60,
 };
@@ -41,6 +41,11 @@ function updateCurrentMode(mode) {
     timeRemaining = durations[currentMode];
     updateTimerDisplay();
     updateButtonState();
+}
+
+function moveToNextMode() {
+    const nextMode = currentMode === "focus" ? "shortBreak" : "focus";
+    updateCurrentMode(nextMode);
 }
 
 modeButtons.forEach((button) => {
@@ -80,7 +85,7 @@ function startTimer() {
                 timerInterval = null;
                 isRunning = false;
                 isPaused = false;
-                updateButtonState();
+                moveToNextMode();
                 return;
             }
 
@@ -92,7 +97,7 @@ function startTimer() {
                 timerInterval = null;
                 isRunning = false;
                 isPaused = false;
-                updateButtonState();
+                moveToNextMode();
             }
         }, 1000);
     }
