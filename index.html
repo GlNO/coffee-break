@@ -30,7 +30,8 @@
                   <!-- Header Items -->
                        
                        <div class="nav-links">
-                              <a href="index.html"> Settings </a>
+                            
+                              <button id="settings-button"> Settings</button>
                               <a href="index.html"> Analytics </a>
                               <a href="index.html"> About </a>
 
@@ -47,7 +48,22 @@
 
             <div class="timer-section">
 
+                  <div class="mode-selector" aria-label="Timer mode selector">
+                      <button class="mode-button is-active" data-mode="focus" type="button">
+                          <span class="mode-name">Pomodoro</span>
+                       
+                      </button>
 
+                      <button class="mode-button" data-mode="shortBreak" type="button">
+                          <span class="mode-name">Short Break</span>
+                          
+                      </button>
+
+                      <button class="mode-button" data-mode="longBreak" type="button">
+                          <span class="mode-name">Long Break</span>
+                          
+                      </button>
+                  </div>
 
                   <div class="timer"> 25:00 </div>
       
@@ -55,13 +71,9 @@
 
             </div>
 
-           
-        
-            
-            <footer> @syd.cgb </footer>
 
-      </main>
-     
+            <footer> @syd.cgb </footer>
+   </main>
 <script src="./js/script.js"></script>
 </body>
 </html>

@@ -6,9 +6,50 @@ const FOCUS_DURATION = 25 * 60;
 
 let timeRemaining = FOCUS_DURATION;
 let isRunning = false;
+let isPaused = false;
 let timerInterval = null;
 
 // timer display
+
+
+const modeButtons = document.querySelectorAll(".mode-button");
+
+const defaultDurations = {
+    focus: 25 * 60,
+    shortBreak: 5 * 60,
+    longBreak: 15 * 60,
+};
+
+let durations = { ...defaultDurations };
+let currentMode = "focus";
+
+function highlightSelectedMode() {
+    modeButtons.forEach((button) => {
+        const isActive = button.dataset.mode === currentMode;
+        button.classList.toggle("is-active", isActive);
+    });
+}
+
+function updateCurrentMode(mode) {
+    currentMode = mode;
+    highlightSelectedMode();
+
+    clearInterval(timerInterval);
+    timerInterval = null;
+    isRunning = false;
+    isPaused = false;
+    timeRemaining = durations[currentMode];
+    updateTimerDisplay();
+    updateButtonState();
+}
+
+modeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+        updateCurrentMode(button.dataset.mode);
+    });
+});
+
+highlightSelectedMode();
 
 function updateTimerDisplay(){
 
@@ -23,16 +64,34 @@ function updateTimerDisplay(){
 
 }
 function startTimer() {
+    if (timeRemaining <= 0) {
+        timeRemaining = durations[currentMode];
+        updateTimerDisplay();
+    }
+
     if (!isRunning) {
         isRunning = true;
+        isPaused = false;
         updateButtonState();
+
         timerInterval = setInterval(function () {
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                isRunning = false;
+                isPaused = false;
+                updateButtonState();
+                return;
+            }
+
             timeRemaining--;
             updateTimerDisplay();
 
             if (timeRemaining === 0) {
                 clearInterval(timerInterval);
+                timerInterval = null;
                 isRunning = false;
+                isPaused = false;
                 updateButtonState();
             }
         }, 1000);
@@ -43,6 +102,7 @@ function pauseTimer() {
     clearInterval(timerInterval);
     timerInterval = null;
     isRunning = false;
+    isPaused = true;
     updateButtonState();
 }
 
@@ -50,6 +110,7 @@ function finishTimer() {
     clearInterval(timerInterval);
     timerInterval = null;
     isRunning = false;
+    isPaused = false;
     timeRemaining = 0;
     updateTimerDisplay();
     updateButtonState();
@@ -62,6 +123,8 @@ function updateButtonState() {
         startButton.textContent = "Pause Brewing";
     } else if (timeRemaining === 0) {
         startButton.textContent = "Brew Complete ☕";
+    } else if (isPaused) {
+        startButton.textContent = "Resume Brewing";
     } else {
         startButton.textContent = "Start Brewing";
     }
