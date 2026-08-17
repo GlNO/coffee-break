@@ -2,6 +2,9 @@
 const timer = document.querySelector(".timer");
 const startButton = document.querySelector("#start-button");
 
+const clickSound = new Audio("./assets/audio/click.wav");
+const switchmodeSound = new Audio("./assets/audio/switch.wav");
+
 const FOCUS_DURATION = 25 * 60;
 
 let timeRemaining = FOCUS_DURATION;
@@ -15,10 +18,18 @@ let timerInterval = null;
 const modeButtons = document.querySelectorAll(".mode-button");
 
 const defaultDurations = {
-    focus: 5,
+    focus: 25 * 60,
     shortBreak: 5 * 60,
     longBreak: 15 * 60,
 };
+
+
+
+startButton.addEventListener("click", () => {
+    clickSound.play();
+});
+
+
 
 let durations = { ...defaultDurations };
 let currentMode = "focus";
@@ -51,6 +62,7 @@ function moveToNextMode() {
 modeButtons.forEach((button) => {
     button.addEventListener("click", () => {
         updateCurrentMode(button.dataset.mode);
+        switchmodeSound.play();
     });
 });
 
