@@ -6,9 +6,15 @@
       <title> CoffeeBreak </title>
 
 
+      <!-- FONTS -->
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+     
+
+        <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap" rel="stylesheet">
+
+
 
       <link rel="stylesheet" href="./css/style.css"> 
 
@@ -31,7 +37,7 @@
                        
                        <div class="nav-links">
                             
-                              <button id="settings-button"> Settings</button>
+                              <button id="settings-button" type="button">Hi  there! </button>
                               <a href="index.html"> Analytics </a>
                               <a href="index.html"> About </a>
 
@@ -47,6 +53,26 @@
       
 
             <div class="timer-section">
+
+                  <div class="welcome-overlay" id="welcome-overlay">
+                      <div class="welcome-card" id="welcome-card">
+                          <div class="receipt-header">
+                              <span class="receipt-brand">coffee &lt;br&gt;</span>
+                              <span class="receipt-subtitle">RECEIPT</span>
+                          </div>
+
+                          <div class="receipt-divider"></div>
+
+                          <label class="receipt-label" for="customer-name"> Drink For</label>
+                          <input id="customer-name" class="customer-name" type="text" placeholder="your name" maxlength="20" />
+
+                          <div class="receipt-divider"></div>
+
+                          <button class="qr-button" id="welcome-button" type="button" aria-label="Submit name">
+                              <img src="./assets/images/receipt.png" alt="Receipt submission button" />
+                          </button>
+                      </div>
+                  </div>
 
                   <div class="mode-selector" aria-label="Timer mode selector">
                       <button class="mode-button is-active" data-mode="focus" type="button">
