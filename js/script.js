@@ -11,6 +11,7 @@ const appNameLink = document.querySelector(".app-name");
 const clickSound = new Audio("./assets/audio/click.wav");
 const switchmodeSound = new Audio("./assets/audio/switch.wav");
 const continueSound = new Audio("./assets/audio/scribble.mp3");
+const coffeePourSound = new Audio("./assets/audio/coffee_pour.mp3");
 
 const STORAGE_KEY = "coffee-break-customer-name";
 
@@ -20,6 +21,7 @@ let timeRemaining = FOCUS_DURATION;
 let isRunning = false;
 let isPaused = false;
 let timerInterval = null;
+let coffeePourPlayed = false;
 
 // timer display
 
@@ -27,7 +29,8 @@ let timerInterval = null;
 const modeButtons = document.querySelectorAll(".mode-button");
 
 const defaultDurations = {
-    focus: 25 * 60,
+    // focus: 25 * 60,
+    focus: 8,
     shortBreak: 5 * 60,
     longBreak: 15 * 60,
 };
@@ -59,6 +62,7 @@ function updateCurrentMode(mode) {
     timerInterval = null;
     isRunning = false;
     isPaused = false;
+    coffeePourPlayed = false;
     timeRemaining = durations[currentMode];
     updateTimerDisplay();
     updateButtonState();
@@ -109,6 +113,12 @@ function startTimer() {
                 isPaused = false;
                 moveToNextMode();
                 return;
+            }
+
+            if (timeRemaining === 6 && !coffeePourPlayed) {
+                coffeePourSound.currentTime = 0;
+                coffeePourSound.play();
+                coffeePourPlayed = true;
             }
 
             timeRemaining--;
