@@ -1,9 +1,18 @@
 
 const timer = document.querySelector(".timer");
 const startButton = document.querySelector("#start-button");
+const welcomeOverlay = document.querySelector("#welcome-overlay");
+const welcomeCard = document.querySelector("#welcome-card");
+const welcomeButton = document.querySelector("#welcome-button");
+const customerNameInput = document.querySelector("#customer-name");
+const settingsButton = document.querySelector("#settings-button");
+const appNameLink = document.querySelector(".app-name");
 
 const clickSound = new Audio("./assets/audio/click.wav");
 const switchmodeSound = new Audio("./assets/audio/switch.wav");
+const continueSound = new Audio("./assets/audio/scribble.mp3");
+
+const STORAGE_KEY = "coffee-break-customer-name";
 
 const FOCUS_DURATION = 25 * 60;
 
@@ -22,6 +31,7 @@ const defaultDurations = {
     shortBreak: 5 * 60,
     longBreak: 15 * 60,
 };
+
 
 
 
@@ -156,7 +166,71 @@ startButton.addEventListener("click", function() {
     }
 });
 
+function formatNameForDisplay(value) {
+    if (!value) return "";
 
+    return value
+        .trim()
+        .toLowerCase()
+        .split(/\s+/)
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+}
+
+function updateSettingsButtonLabel() {
+    const savedName = localStorage.getItem(STORAGE_KEY);
+    const displayName = formatNameForDisplay(savedName);
+
+    if (displayName && settingsButton) {
+        settingsButton.textContent = `Hi, ${displayName}`;
+    } else if (settingsButton) {
+        settingsButton.textContent = "Hi there!";
+    }
+}
+
+function submitCustomerName() {
+    const name = customerNameInput.value.trim();
+
+    if (!name) {
+        customerNameInput.focus();
+        return;
+    }
+
+    localStorage.setItem(STORAGE_KEY, name);
+    welcomeOverlay.style.display = "none";
+    continueSound.play();
+    updateSettingsButtonLabel();
+}
+
+welcomeButton.addEventListener("click", submitCustomerName);
+
+customerNameInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        submitCustomerName();
+    }
+});
+
+if (appNameLink) {
+    appNameLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        localStorage.removeItem(STORAGE_KEY);
+        welcomeOverlay.style.display = "flex";
+        customerNameInput.value = "";
+        customerNameInput.focus();
+        updateSettingsButtonLabel();
+    });
+}
+
+const savedName = localStorage.getItem(STORAGE_KEY);
+
+if (savedName) {
+    welcomeOverlay.style.display = "none";
+} else {
+    welcomeOverlay.style.display = "flex";
+}
+
+updateSettingsButtonLabel();
 
 updateTimerDisplay();
 updateButtonState();
