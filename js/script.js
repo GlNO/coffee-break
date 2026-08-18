@@ -7,6 +7,7 @@ const welcomeButton = document.querySelector("#welcome-button");
 const customerNameInput = document.querySelector("#customer-name");
 const settingsButton = document.querySelector("#settings-button");
 const appNameLink = document.querySelector(".app-name");
+const rewardLayer = document.querySelector("#reward-layer");
 
 const clickSound = new Audio("./assets/audio/click.wav");
 const switchmodeSound = new Audio("./assets/audio/switch.wav");
@@ -67,6 +68,92 @@ function updateCurrentMode(mode) {
     timeRemaining = durations[currentMode];
     updateTimerDisplay();
     updateButtonState();
+}
+
+function spawnRewardCup() {
+    if (!rewardLayer) return;
+
+    const cup = document.createElement("img");
+    cup.src = "./assets/images/coffee_cup.png";
+    cup.alt = "Coffee reward";
+    cup.className = "reward-cup";
+
+    const navLinks = document.querySelectorAll(".nav-links a");
+    const collectionLink = navLinks[1]; 
+
+
+    cup.style.left = "50%";
+    cup.style.top = "50%";
+
+    let endLeft = "50%";
+    let endTop = "50%";
+
+    if (collectionLink) {
+        const rect = collectionLink.getBoundingClientRect();
+        endLeft = `${rect.left + rect.width / 2}px`;
+        endTop = `${rect.top + rect.height / 2}px`;
+    }
+
+    rewardLayer.appendChild(cup);
+
+    cup.animate([
+        { 
+            opacity: 0, 
+            left: "50%", 
+            top: "50%",
+            transform: "translate(-50%, -50%) scale(0.7) rotate(-8deg)"
+        },
+        { 
+            opacity: 1, 
+            left: "50%", 
+            top: "50%",
+            transform: "translate(-50%, -50%) scale(1) rotate(0deg)",
+            offset: 0.15
+        },
+        { 
+            opacity: 1, 
+            left: "50%", 
+            top: "50%",
+            transform: "translate(-50%, -50%) scale(1) rotate(0deg)",
+            offset: 0.45
+        },
+        { 
+            opacity: 1, 
+            left: endLeft, 
+            top: endTop,
+            transform: "translate(-50%, -50%) scale(1) rotate(4deg)",
+            offset: 0.75
+        },
+        { 
+            opacity: 0, 
+            left: endLeft, 
+            top: endTop,
+            transform: "translate(-50%, -50%) scale(1.12) rotate(0deg)"
+        }
+    ], {
+        duration: 5000,
+        easing: "cubic-bezier(0.34, 1.56, 0.64, 1)"
+    });
+
+
+    if (collectionLink) {
+        setTimeout(() => {
+            collectionLink.animate([
+                { transform: "scale(1) rotate(0deg)" },
+                { transform: "scale(1.2) rotate(5deg)" },
+                { transform: "scale(1.15) rotate(-3deg)" },
+                { transform: "scale(1.1) rotate(2deg)" },
+                { transform: "scale(1) rotate(0deg)" }
+            ], {
+                duration: 600,
+                easing: "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+            });
+        }, 1170);
+    }
+
+    setTimeout(() => {
+        cup.remove();
+    }, 3200);
 }
 
 function moveToNextMode() {
@@ -131,6 +218,11 @@ function startTimer() {
                 isRunning = false;
                 isPaused = false;
                 completedSound.play();
+
+                if (currentMode === "focus") {
+                    spawnRewardCup();
+                }
+
                 moveToNextMode();
             }
         }, 1000);
@@ -163,7 +255,7 @@ function updateButtonState() {
     } else if (timeRemaining === 0) {
         startButton.textContent = "Brew Complete ☕";
     } else if (isPaused) {
-        startButton.textContent = "Resume Brewing";
+        startButton.textContent = "Back to Work";
     } else {
         startButton.textContent = "Start Brewing";
     }
