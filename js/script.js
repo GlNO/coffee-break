@@ -12,6 +12,7 @@ const clickSound = new Audio("./assets/audio/click.wav");
 const switchmodeSound = new Audio("./assets/audio/switch.wav");
 const continueSound = new Audio("./assets/audio/scribble.mp3");
 const coffeePourSound = new Audio("./assets/audio/coffee_pour.mp3");
+const completedSound = new Audio("./assets/audio/completed.mp3");
 
 const STORAGE_KEY = "coffee-break-customer-name";
 
@@ -30,7 +31,7 @@ const modeButtons = document.querySelectorAll(".mode-button");
 
 const defaultDurations = {
     // focus: 25 * 60,
-    focus: 8,
+    focus: 7,
     shortBreak: 5 * 60,
     longBreak: 15 * 60,
 };
@@ -129,6 +130,7 @@ function startTimer() {
                 timerInterval = null;
                 isRunning = false;
                 isPaused = false;
+                completedSound.play();
                 moveToNextMode();
             }
         }, 1000);
