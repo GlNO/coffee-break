@@ -1,4 +1,5 @@
 
+
 const timer = document.querySelector(".timer");
 const startButton = document.querySelector("#start-button");
 const welcomeOverlay = document.querySelector("#welcome-overlay");
@@ -6,8 +7,8 @@ const welcomeCard = document.querySelector("#welcome-card");
 const welcomeButton = document.querySelector("#welcome-button");
 const customerNameInput = document.querySelector("#customer-name");
 const settingsButton = document.querySelector("#settings-button");
-const appNameLink = document.querySelector(".app-name");
 const rewardLayer = document.querySelector("#reward-layer");
+
 
 const clickSound = new Audio("./assets/audio/click.wav");
 const switchmodeSound = new Audio("./assets/audio/switch.wav");
@@ -101,7 +102,7 @@ function spawnRewardCup() {
             opacity: 0, 
             left: "50%", 
             top: "50%",
-            transform: "translate(-50%, -50%) scale(0.7) rotate(-8deg)"
+            transform: "translate(-50%, -50%) scale(0.82) rotate(-8deg)"
         },
         { 
             opacity: 1, 
@@ -121,14 +122,14 @@ function spawnRewardCup() {
             opacity: 1, 
             left: endLeft, 
             top: endTop,
-            transform: "translate(-50%, -50%) scale(1) rotate(4deg)",
+            transform: "translate(-50%, -50%) scale(0.72) rotate(4deg)",
             offset: 0.75
         },
         { 
             opacity: 0, 
             left: endLeft, 
             top: endTop,
-            transform: "translate(-50%, -50%) scale(1.12) rotate(0deg)"
+            transform: "translate(-50%, -50%) scale(0.52) rotate(0deg)"
         }
     ], {
         duration: 5000,
@@ -315,16 +316,18 @@ customerNameInput.addEventListener("keydown", (event) => {
     }
 });
 
-if (appNameLink) {
-    appNameLink.addEventListener("click", (event) => {
+document.addEventListener("click", (event) => {
+    const appNameLink = event.target.closest(".app-name");
+
+    if (appNameLink) {
         event.preventDefault();
         localStorage.removeItem(STORAGE_KEY);
         welcomeOverlay.style.display = "flex";
         customerNameInput.value = "";
         customerNameInput.focus();
         updateSettingsButtonLabel();
-    });
-}
+    }
+});
 
 const savedName = localStorage.getItem(STORAGE_KEY);
 
