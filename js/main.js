@@ -347,7 +347,7 @@ customerNameInput.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("click", (event) => {
-    const appNameLink = event.target.closest(".app-name");
+    // const appNameLink = event.target.closest(".app-name");
     const settingsButton = event.target.closest("#settings-button");
     const newTaskButton = event.target.closest("#new-task-button");
 

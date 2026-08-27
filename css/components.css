@@ -269,6 +269,7 @@
     font-size: 1.35rem;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-transform: lowercase;
 }
 
 .new-task-button {
