@@ -11,7 +11,18 @@ function loadComponent(id, file) {
         })
         .then(data => {
             document.getElementById(id).innerHTML = data;
-            window.dispatchEvent(new Event("navbar-loaded"));
+        
+            const savedName = localStorage.getItem("coffee-break-customer-name");
+            const settingsButton = document.querySelector("#settings-button");
+        
+            if (savedName && settingsButton) {
+                const displayName = savedName
+                    .trim()
+                    .toLowerCase()
+                    .replace(/\b\w/g, letter => letter.toUpperCase());
+        
+                settingsButton.textContent = `Hi, ${displayName}`;
+            }
         })
         .catch(error => {
             console.error(error);
