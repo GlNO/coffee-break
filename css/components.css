@@ -1,0 +1,582 @@
+
+
+/*  NAVBAR STYLE */
+
+
+
+
+
+.welcome-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(27, 18, 8, 0.5);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.welcome-card {
+    width: min(420px, 90vw);
+    background: #fcf8f3;
+    border: 2px solid rgba(40, 23, 0, 0.2);
+    border-radius: 3px;
+    box-shadow: 0 22px 40px rgba(40, 23, 0, 0.22);
+    padding: 1.5rem 1.25rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    position: relative;
+}
+
+.welcome-card.task-only .receipt-label[for="customer-name"],
+.welcome-card.task-only #customer-name {
+    display: none;
+}
+
+
+
+.receipt-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    text-align: center;
+}
+
+.receipt-brand {
+    font-family: "Abril Fatface", serif;
+    font-size: 2.2rem;
+    color: #0a0908;
+    letter-spacing: 0.04em;
+}
+
+.receipt-subtitle {
+    font-size: 1.25rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #0a0908;
+    font-weight: 500;
+    font-family: "Inter", sans-serif;
+}
+
+.receipt-divider {
+    width: 100%;
+    height: 3px;
+    background-image: repeating-linear-gradient(
+        to right,
+        rgba(40, 23, 0, 0.6) 0,
+        rgba(40, 23, 0, 0.6) 10px,
+        transparent 10px,
+        transparent 18px
+    );
+    background-repeat: repeat-x;
+    background-position: center;
+    opacity: 1;
+}
+
+.receipt-label {
+
+    font-size: 1rem;
+    color: #0a0908;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 0.25rem;
+    font-family: "Inter", sans-serif;
+}
+
+.customer-name {
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid #fcf8f3;
+    border-radius: 4px;
+    padding: 0.8rem 0.9rem;
+    font-size: 3rem;
+    line-height: 1;
+    color: #281700;
+    outline: none;
+    text-transform: lowercase;
+
+    font-family: "lacquer", cursive;
+    text-align: center;
+
+}
+
+.customer-name::placeholder {
+    color: rgba(40, 23, 0, 0.45);
+    text-align: center;
+    font-family: "lacquer", cursive;
+}
+
+.task-name {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid rgba(40, 23, 0, 0.18);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.6);
+    color: #301d01;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    outline: none;
+}
+
+.task-name::placeholder {
+    color: rgba(40, 23, 0, 0.45);
+}
+
+.drink-choice {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.drink-choice legend {
+    padding: 0;
+    margin-bottom: 0.35rem;
+}
+
+.drink-option {
+    display: grid;
+    justify-items: center;
+    gap: 0.25rem;
+    padding: 0.45rem 0.2rem;
+    border: 1px solid rgba(40, 23, 0, 0.2);
+    border-radius: 5px;
+    color: #281700;
+    cursor: pointer;
+    font-family: "lacquer", cursive;
+    font-size: 0.80rem;
+}
+
+.drink-option input {
+    position: absolute;
+    opacity: 0;
+}
+
+.drink-option img {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+}
+
+.drink-option:has(input:checked) {
+    border-color: #281700;
+    background: rgba(224, 191, 145, 0.35);
+}
+
+.drink-option:has(input:focus-visible) {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+
+.qr-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.qr-button:hover {
+    transform: translateY(-1px) scale(1.02);
+    filter: brightness(1.04);
+}
+
+.qr-button:active {
+    transform: translateY(0) scale(0.99);
+}
+
+.qr-button img {
+    display: block;
+    width: 350px;
+    height: 80px;
+    object-fit: contain;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.qr-button:hover img {
+    transform: scale(1.02);
+}
+
+.qr-button:active img {
+    transform: scale(0.98);
+}
+
+
+
+.timer-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.current-task {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: min(560px, calc(100% - 2rem));
+    margin: 0.5rem 0 0.25rem;
+    padding: 0.65rem 1rem 0.35rem;
+    border-top: 3px solid #412b18;
+    color: #281700;
+    text-align: center;
+    max-height: 5rem;
+    overflow: hidden;
+    opacity: 1;
+    transform: translateY(0);
+    transition: max-height 0.3s ease, margin 0.3s ease, padding 0.3s ease, border-width 0.3s ease, opacity 0.25s ease, transform 0.3s ease;
+}
+
+.current-task.is-hidden {
+    max-height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-top-width: 0;
+    opacity: 0;
+    transform: translateY(-0.4rem);
+    pointer-events: none;
+}
+
+.current-task-label {
+    color: rgba(40, 23, 0, 0.55);
+    font-family: "Inter", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+#current-task-name {
+    min-width: 0;
+    overflow: hidden;
+    font-family: "Lacquer", cursive;
+    font-size: 1.35rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-transform: lowercase;
+}
+
+.new-task-button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #b06f38;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 0.75rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+.new-task-button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+.daily-focus-summary {
+    margin: 0.25rem 0 0;
+    color: rgba(40, 23, 0, 0.65);
+    font-family: "Inter", sans-serif;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.dev-tools {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 2100;
+    display: grid;
+    justify-items: end;
+    gap: 0.5rem;
+    font-family: "Inter", sans-serif;
+}
+
+.dev-button {
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(40, 23, 0, 0.35);
+    border-radius: 4px;
+    background: #fcf8f3;
+    color: #281700;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+.dev-panel {
+    display: grid;
+    gap: 0.45rem;
+    width: 190px;
+    padding: 0.75rem;
+    border: 1px solid rgba(40, 23, 0, 0.25);
+    background: #fcf8f3;
+    box-shadow: 0 8px 20px rgba(40, 23, 0, 0.16);
+}
+
+.dev-panel[hidden] {
+    display: none;
+}
+
+.dev-panel-title {
+    color: rgba(40, 23, 0, 0.6);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.dev-panel button {
+    padding: 0.55rem;
+    border: 1px solid rgba(40, 23, 0, 0.2);
+    background: transparent;
+    color: #281700;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 0.75rem;
+    text-align: left;
+}
+
+.completion-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2200;
+    display: grid;
+    gap: 0.35rem;
+    width: min(360px, calc(100% - 2rem));
+    padding: .95rem 1.2rem;
+    border-top: 4px solid #28190d;
+    background: #fcf8f3;
+    box-shadow: 0 14px 30px rgba(40, 23, 0, 0.18);
+    text-align: center;
+    transform: translate(-50%, -50%);
+    animation: completionPopupIn 0.35s ease-out both;
+}
+
+.completion-popup[hidden] {
+    display: none;
+}
+
+.completion-popup.is-closing {
+    animation: completionPopupOut 0.25s ease-in both;
+}
+
+.completion-kicker {
+    color: rgba(40, 23, 0, 0.55);
+    font-family: "Inter", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.completion-popup strong {
+    color: #281700;
+    font-family: "Lacquer", cursive;
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+.completion-popup button {
+    justify-self: center;
+    margin-top: 0.3rem;
+    border: 0;
+    background: transparent;
+    color: #382211;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 0.75rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+@keyframes completionPopupIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, calc(-50% - 0.75rem));
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes completionPopupOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, calc(-50% - 0.5rem));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .completion-popup,
+    .completion-popup.is-closing {
+        animation: none;
+    }
+}
+
+.dev-button:focus-visible,
+.dev-panel button:focus-visible {
+    outline: 2px solid #b06f38;
+    outline-offset: 2px;
+}
+
+.timer {
+    font-size: 9rem;
+    color: #3E2511;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .current-task {
+        align-items: center;
+        width: min(100% - 2rem, 560px);
+    }
+
+    #current-task-name {
+        width: 100%;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .current-task {
+        transition: none;
+    }
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    min-width: 260px;
+    white-space: nowrap;
+    background-color: #281700;
+    color: #F5F3F4;
+    border: none;
+    border-radius: 5px;
+    padding: 1rem 4rem;
+    margin: 1.2rem;
+    font-family: "Abril Fatface", serif;
+    font-size: 2rem;
+    cursor: pointer;
+    box-shadow: 0 10px 0 #1b1208, 0 16px 22px rgba(40, 23, 0, 0.18);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #3E2511;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 0 #1b1208, 0 18px 26px rgba(40, 23, 0, 0.2);
+}
+
+.btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 4px 0 #1b1208, 0 6px 10px rgba(40, 23, 0, 0.16);
+}
+
+.mode-selector {
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding: 0.8rem;
+    background: rgba(40, 23, 0, 0.06);
+    border-radius: 999px;
+    border: 1px solid rgba(40, 23, 0, 0.08);
+    overflow: hidden;
+}
+
+.mode-button {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+    width: 150px;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: #281700;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    cursor: pointer;
+    transition: color 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.mode-button.is-active {
+    background: #281700;
+    color: #F5F3F4;
+    box-shadow: 0 5px 0 rgba(40, 23, 0, 0.2), 0 5px 10px rgba(40, 23, 0, 0.14);
+    transform: translateY(-2px);
+    animation: tabSlide 0.20s ease;
+}
+
+.mode-button:active,
+.mode-button.is-active:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 0 rgba(40, 23, 0, 0.2), 0 1px 3px rgba(40, 23, 0, 0.12);
+}
+
+.mode-name {
+    font-size: 1.02rem;
+    letter-spacing: 0.01em;
+}
+
+@keyframes tabSlide {
+    0% {
+        transform: translateX(-10px) scale(0.99);
+        opacity: 0.75;
+    }
+    100% {
+        transform: translateX(0) scale(0.98);
+        opacity: 1;
+    }
+}
+
+#reward-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 2000;
+}
+
+.reward-cup {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 16px rgba(40, 23, 0, 0.18));
+}
+
+
+

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title> CoffeeBreak | Collections </title>
+
+
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+     
+
+       <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap" rel="stylesheet">
+
+      <link rel="stylesheet" href="../css/style.css">
+
+</head>
+<body>
+      
+
+      <main>
+
+
+
+            <div id="navbar"> </div>
+
+            <section class="collection-page" aria-labelledby="collection-title">
+                  <h1 id="collection-title"> drink collection</h1>
+                  <p class="collection-intro">Every completed focus session adds a drink to your collection.</p>
+                  <div class="collection-summary" aria-label="Collection summary">
+                        <div class="summary-item">
+                              <span class="summary-value" id="total-drinks">0</span>
+                              <span class="summary-label">Drinks earned</span>
+                        </div>
+                        <div class="summary-item">
+                              <span class="summary-value" id="favorite-drink">-</span>
+                              <span class="summary-label">Favorite drink</span>
+                        </div>
+                        <div class="summary-item">
+                              <span class="summary-value" id="latest-drink">-</span>
+                              <span class="summary-label">Latest reward</span>
+                        </div>
+                  </div>
+                  <h2 class="collection-heading">Your earned drinks</h2>
+                  <div id="collection-grid" class="collection-grid" aria-live="polite"></div>
+            </section>
+
+            
+
+      <script src="../js/navbar.js"></script>
+      <script src="../js/collections.js"></script>
+
+      </main>
+</body>
+</html>

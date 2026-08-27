@@ -4,11 +4,18 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title> CoffeeBreak </title>
+      <link rel="icon" type="image/png" href="./assets/icons/coffee_break_logo.png"/>
 
 
+      <!-- FONTS -->
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+     
+
+        <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap" rel="stylesheet">
+
+
 
       <link rel="stylesheet" href="./css/style.css"> 
 
@@ -20,33 +27,59 @@
 
       <main>
 
-         <header> 
-            <nav class="navbar"> 
-                  
-
-
-                 <p> <a href="/" class="app-name"> coffee &lt;br&gt;</a> </p>
-
-                  <!-- Header Items -->
-                       
-                       <div class="nav-links">
-                            
-                              <button id="settings-button"> Settings</button>
-                              <a href="index.html"> Analytics </a>
-                              <a href="index.html"> About </a>
-
-                       </div>
-
-
-
-                  <!-- Header Items  -->
-
-            </nav>
-
-         </header>
+        <div id="navbar"></div>
       
 
+            <div id="reward-layer" aria-live="polite"></div>
+
             <div class="timer-section">
+
+                  <div class="welcome-overlay" id="welcome-overlay">
+                      <div class="welcome-card" id="welcome-card">
+                          <div class="receipt-header">
+                              <span class="receipt-brand">coffee &lt;br&gt;</span>
+                              <span class="receipt-subtitle">RECEIPT</span>
+                          </div>
+
+                          <div class="receipt-divider"></div>
+
+                          <label class="receipt-label" for="customer-name"> Drink For</label>
+                          <input id="customer-name" class="customer-name" type="text" placeholder="your name" maxlength="20" />
+
+                          <label class="receipt-label" for="task-name"> TO DO: </label>
+                          <input id="task-name" class="task-name" type="text" placeholder="what are you working on?" maxlength="80" />
+
+                          <fieldset class="drink-choice">
+                              <legend class="receipt-label">Choose your drink</legend>
+                              <label class="drink-option">
+                                  <input type="radio" name="drink" value="cappucino" checked />
+                            
+                                  <span>cappuccino</span>
+                              </label>
+                              <label class="drink-option">
+                                  <input type="radio" name="drink" value="latte" />
+                                
+                                  <span>latte</span>
+                              </label>
+                              <label class="drink-option">
+                                  <input type="radio" name="drink" value="matcha" />
+                                  
+                                  <span>matcha</span>
+                              </label>
+                              <label class="drink-option">
+                                  <input type="radio" name="drink" value="refresher" />
+                                 
+                                  <span>refresher</span>
+                              </label>
+                          </fieldset>
+
+                          <div class="receipt-divider"></div>
+
+                          <button class="qr-button" id="welcome-button" type="button" aria-label="Submit name">
+                              <img src="./assets/images/receipt.png" alt="Receipt submission button" />
+                          </button>
+                      </div>
+                  </div>
 
                   <div class="mode-selector" aria-label="Timer mode selector">
                       <button class="mode-button is-active" data-mode="focus" type="button">
@@ -69,11 +102,33 @@
       
                   <button class="btn" id="start-button"> Start Brewing </button>
 
+                  <div class="current-task" id="current-task" aria-live="polite">
+                      <span class="current-task-label">Now focusing on</span>
+                      <span id="current-task-name">No task set</span>
+                      <button id="new-task-button" class="new-task-button" type="button"> + New Task</button>
+                  </div>
+
+                  <p class="daily-focus-summary" id="daily-focus-summary" aria-live="polite"></p>
+
             </div>
 
 
-            <footer> CoffeeBreak | @syd.cgb </footer>
+            <footer> CoffeeBreak by @syd.cgb | Aug 2026 </footer>
    </main>
-<script src="./js/script.js"></script>
+
+    <aside class="dev-tools" aria-label="Development tools">
+        <button class="dev-button" id="dev-button" type="button" aria-expanded="false" aria-controls="dev-panel">DEV</button>
+        <div class="dev-panel" id="dev-panel" hidden>
+            <span class="dev-panel-title">Test controls</span>
+            <button id="dev-complete-button" type="button">Complete focus session</button>
+            <button id="dev-complete-short-button" type="button">Complete short break</button>
+            <button id="dev-complete-long-button" type="button">Complete long break</button>
+            <button id="dev-reset-button" type="button">Reset collection</button>
+        </div>
+    </aside>
+
+<script src="./js/main.js"></script>
+<script src="./js/navbar.js"></script>
+
 </body>
 </html>
