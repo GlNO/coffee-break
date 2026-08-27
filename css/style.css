@@ -120,36 +120,134 @@ main {
 .collection-page {
     width: min(1100px, calc(100% - 3rem));
     margin: 0 auto;
-    padding: 3rem 0;
+    padding: 3.5rem 0 4rem;
 }
 
 .collection-page h1 {
     font-family: "Lacquer", cursive;
-    margin: 0 0 2rem;
+    margin: 0 0 0.5rem;
     color: #281700;
-    font-size: 2.5rem;
+    font-size: 4rem;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.collection-intro {
+    margin: 0 0 2.25rem;
+    color: rgba(40, 23, 0, 0.7);
+    font-family: "Inter", sans-serif;
+}
+
+.collection-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-bottom: 3rem;
+    border-top: 1px solid rgba(40, 23, 0, 0.25);
+    border-bottom: 1px solid rgba(40, 23, 0, 0.25);
+}
+
+.summary-item {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.85rem 1rem 0.85rem 0;
+    border-right: 1px solid rgba(40, 23, 0, 0.2);
+}
+
+.summary-item:not(:first-child) {
+    padding-left: 1rem;
+}
+
+.summary-item:last-child {
+    border-right: 0;
+}
+
+.summary-value {
+    color: #281700;
+    font-family: "Lacquer", cursive;
+    font-size: 1.5rem;
+}
+
+.summary-label,
+.collection-date {
+    color: rgba(40, 23, 0, 0.65);
+    font-family: "Inter", sans-serif;
+    font-size: 0.8rem;
+}
+
+.collection-heading {
+    margin: 0 0 0.75rem;
+    color: #281700;
+    font-family: "Inter", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
 .collection-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1.5rem;
+    display: flex;
+    flex-direction: column;
     color: #281700;
-    font-family: "Lacquer", cursive;
 }
 
 .collection-item {
     display: grid;
-    justify-items: center;
-    gap: 0.75rem;
-    padding: 1rem;
-    border: 2px solid rgba(40, 23, 0, 0.2);
-    background: #fcf8f3;
+    grid-template-columns: 2rem 76px 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    min-height: 84px;
+    border-top: 1px solid rgba(40, 23, 0, 0.2);
+}
+
+.collection-item:last-child {
+    border-bottom: 1px solid rgba(40, 23, 0, 0.2);
+}
+
+.collection-number {
+    color: rgba(40, 23, 0, 0.5);
+    font-family: "Inter", sans-serif;
+    font-size: 0.75rem;
 }
 
 .collection-item img {
-    width: 100%;
-    max-width: 130px;
-    aspect-ratio: 1;
+    width: 64px;
+    height: 64px;
     object-fit: contain;
+}
+
+.collection-drink-name {
+    font-family: "Lacquer", cursive;
+    font-size: 1.35rem;
+}
+
+@media (max-width: 600px) {
+    .collection-page {
+        width: min(100% - 2rem, 1100px);
+        padding: 2rem 0;
+    }
+
+    .collection-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .collection-page h1 {
+        font-size: 3rem;
+    }
+
+    .collection-item {
+        grid-template-columns: 1.5rem 56px 1fr;
+        gap: 0.65rem;
+        min-height: 72px;
+    }
+
+    .collection-item img {
+        width: 52px;
+        height: 52px;
+    }
+
+    .collection-date {
+        grid-column: 3;
+        margin-top: -0.5rem;
+    }
 }
