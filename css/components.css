@@ -297,62 +297,6 @@
     text-align: center;
 }
 
-.dev-tools {
-    position: fixed;
-    right: 1rem;
-    bottom: 1rem;
-    z-index: 2100;
-    display: grid;
-    justify-items: end;
-    gap: 0.5rem;
-    font-family: "Inter", sans-serif;
-}
-
-.dev-button {
-    padding: 0.5rem 0.7rem;
-    border: 1px solid rgba(40, 23, 0, 0.35);
-    border-radius: 4px;
-    background: #fcf8f3;
-    color: #281700;
-    cursor: pointer;
-    font-family: "Inter", sans-serif;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-}
-
-.dev-panel {
-    display: grid;
-    gap: 0.45rem;
-    width: 190px;
-    padding: 0.75rem;
-    border: 1px solid rgba(40, 23, 0, 0.25);
-    background: #fcf8f3;
-    box-shadow: 0 8px 20px rgba(40, 23, 0, 0.16);
-}
-
-.dev-panel[hidden] {
-    display: none;
-}
-
-.dev-panel-title {
-    color: rgba(40, 23, 0, 0.6);
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.dev-panel button {
-    padding: 0.55rem;
-    border: 1px solid rgba(40, 23, 0, 0.2);
-    background: transparent;
-    color: #281700;
-    cursor: pointer;
-    font-family: "Inter", sans-serif;
-    font-size: 0.75rem;
-    text-align: left;
-}
 
 .completion-popup {
     position: absolute;
@@ -437,11 +381,6 @@
     }
 }
 
-.dev-button:focus-visible,
-.dev-panel button:focus-visible {
-    outline: 2px solid #b06f38;
-    outline-offset: 2px;
-}
 
 .timer {
     font-size: 9rem;
@@ -606,15 +545,6 @@
         width: 100%;
         min-width: 0;
         padding: 0.6rem 0.5rem;
-    }
-
-    .dev-tools {
-        right: 0.5rem;
-        bottom: 0.5rem;
-    }
-
-    .dev-panel {
-        width: min(190px, calc(100vw - 1rem));
     }
 }
 

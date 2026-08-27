@@ -12,10 +12,7 @@ const currentTask = document.querySelector("#current-task");
 const currentTaskName = document.querySelector("#current-task-name");
 const dailyFocusSummary = document.querySelector("#daily-focus-summary");
 const rewardLayer = document.querySelector("#reward-layer");
-const devButton = document.querySelector("#dev-button");
-const devPanel = document.querySelector("#dev-panel");
-const devCompleteButton = document.querySelector("#dev-complete-button");
-const devResetButton = document.querySelector("#dev-reset-button");
+
 
 
 const clickSound = new Audio("./assets/audio/click.wav");
@@ -485,26 +482,6 @@ updateDailyFocusSummary();
 updateTimerDisplay();
 updateButtonState();
 
-devButton.addEventListener("click", () => {
-    const isOpen = !devPanel.hidden;
-    devPanel.hidden = isOpen;
-    devButton.setAttribute("aria-expanded", String(!isOpen));
-});
-
-devCompleteButton.addEventListener("click", () => completeSessionForDev("focus"));
-
-document.querySelector("#dev-complete-short-button").addEventListener("click", () => {
-    completeSessionForDev("shortBreak");
-});
-
-document.querySelector("#dev-complete-long-button").addEventListener("click", () => {
-    completeSessionForDev("longBreak");
-});
-
-devResetButton.addEventListener("click", () => {
-    localStorage.removeItem(COLLECTION_STORAGE_KEY);
-    updateDailyFocusSummary();
-});
 
 document.addEventListener("click", (event) => {
     if (event.target.closest("#completion-close")) {
