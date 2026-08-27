@@ -11,6 +11,20 @@ function loadComponent(id, file) {
         })
         .then(data => {
             document.getElementById(id).innerHTML = data;
+
+            const currentPath = window.location.pathname.replace(/\\/g, "/");
+            const currentPage = currentPath.endsWith("/") ? "/index.html" : currentPath;
+
+            document.querySelectorAll(".nav-links a").forEach(link => {
+                const linkPath = new URL(link.href, window.location.href).pathname.replace(/\\/g, "/");
+                const normalizedLinkPath = linkPath.endsWith("/") ? "/index.html" : linkPath;
+                const isCurrentPage = normalizedLinkPath === currentPage;
+
+                link.classList.toggle("is-active", isCurrentPage);
+                if (isCurrentPage) {
+                    link.setAttribute("aria-current", "page");
+                }
+            });
         
             const savedName = localStorage.getItem("coffee-break-customer-name");
             const settingsButton = document.querySelector("#settings-button");

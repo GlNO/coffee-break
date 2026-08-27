@@ -49,6 +49,40 @@ main {
     opacity: 1;
 }
 
+.nav-links a.is-active {
+    position: relative;
+    opacity: .75;
+}
+
+.nav-links a.is-active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.45rem;
+    height: 3px;
+    background: #281700;
+    transform-origin: center;
+    animation: activeNavIndicator 0.35s ease-out both;
+}
+
+@keyframes activeNavIndicator {
+    from {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+    to {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nav-links a.is-active::after {
+        animation: none;
+    }
+}
+
 .nav-links {
     display: flex;
     gap: 1.5rem;
