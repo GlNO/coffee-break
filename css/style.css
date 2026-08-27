@@ -82,3 +82,40 @@ main {
 #save-settings {
     display: none;
 }
+
+.collection-page {
+    width: min(1100px, calc(100% - 3rem));
+    margin: 0 auto;
+    padding: 3rem 0;
+}
+
+.collection-page h1 {
+    font-family: "Lacquer", cursive;
+    margin: 0 0 2rem;
+    color: #281700;
+    font-size: 2.5rem;
+}
+
+.collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.5rem;
+    color: #281700;
+    font-family: "Lacquer", cursive;
+}
+
+.collection-item {
+    display: grid;
+    justify-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 2px solid rgba(40, 23, 0, 0.2);
+    background: #fcf8f3;
+}
+
+.collection-item img {
+    width: 100%;
+    max-width: 130px;
+    aspect-ratio: 1;
+    object-fit: contain;
+}

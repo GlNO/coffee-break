@@ -6,6 +6,7 @@ const welcomeOverlay = document.querySelector("#welcome-overlay");
 const welcomeCard = document.querySelector("#welcome-card");
 const welcomeButton = document.querySelector("#welcome-button");
 const customerNameInput = document.querySelector("#customer-name");
+const drinkInputs = document.querySelectorAll('input[name="drink"]');
 const rewardLayer = document.querySelector("#reward-layer");
 
 
@@ -16,6 +17,8 @@ const coffeePourSound = new Audio("./assets/audio/coffee_pour.mp3");
 const completedSound = new Audio("./assets/audio/completed.mp3");
 
 const STORAGE_KEY = "coffee-break-customer-name";
+const COLLECTION_STORAGE_KEY = "coffee-break-collection";
+const DEFAULT_DRINK = "cappucino";
 
 const FOCUS_DURATION = 25 * 60;
 
@@ -71,11 +74,16 @@ function updateCurrentMode(mode) {
 }
 
 function spawnRewardCup() {
+    const collection = JSON.parse(localStorage.getItem(COLLECTION_STORAGE_KEY) || "[]");
+    const selectedDrink = localStorage.getItem("coffee-break-drink") || DEFAULT_DRINK;
+    collection.push({ drink: selectedDrink, earnedAt: new Date().toISOString() });
+    localStorage.setItem(COLLECTION_STORAGE_KEY, JSON.stringify(collection));
+
     if (!rewardLayer) return;
 
     const cup = document.createElement("img");
-    cup.src = "./assets/images/coffee_cup.png";
-    cup.alt = "Coffee reward";
+    cup.src = `./assets/images/${selectedDrink}.png`;
+    cup.alt = `${selectedDrink} reward`;
     cup.className = "reward-cup";
 
     const navLinks = document.querySelectorAll(".nav-links a");
@@ -304,6 +312,8 @@ function submitCustomerName() {
     }
 
     localStorage.setItem(STORAGE_KEY, name);
+    const selectedDrink = document.querySelector('input[name="drink"]:checked')?.value || DEFAULT_DRINK;
+    localStorage.setItem("coffee-break-drink", selectedDrink);
     welcomeOverlay.style.display = "none";
     continueSound.play();
     updateSettingsButtonLabel();
@@ -320,10 +330,23 @@ customerNameInput.addEventListener("keydown", (event) => {
 
 document.addEventListener("click", (event) => {
     const appNameLink = event.target.closest(".app-name");
+    const settingsButton = event.target.closest("#settings-button");
+
+    if (settingsButton) {
+        const savedDrink = localStorage.getItem("coffee-break-drink") || DEFAULT_DRINK;
+        const selectedInput = document.querySelector(`input[name="drink"][value="${savedDrink}"]`);
+
+        if (selectedInput) selectedInput.checked = true;
+        welcomeOverlay.style.display = "flex";
+        customerNameInput.value = localStorage.getItem(STORAGE_KEY) || "";
+        customerNameInput.focus();
+        return;
+    }
 
     if (appNameLink) {
         event.preventDefault();
         localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem("coffee-break-drink");
         welcomeOverlay.style.display = "flex";
         customerNameInput.value = "";
         customerNameInput.focus();
