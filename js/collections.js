@@ -59,6 +59,10 @@ function renderCollection() {
         const label = document.createElement("span");
         label.textContent = getDrinkLabel(drink);
 
+        const task = document.createElement("span");
+        task.className = "collection-task";
+        task.textContent = cup.task || "No task specified";
+
         const date = document.createElement("time");
         date.className = "collection-date";
         date.dateTime = cup.earnedAt || "";
@@ -70,7 +74,7 @@ function renderCollection() {
             })
             : "Date unavailable";
 
-        item.append(number, image, label, date);
+        item.append(number, image, label, task, date);
         collectionGrid.appendChild(item);
     });
 }

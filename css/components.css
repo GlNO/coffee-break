@@ -30,6 +30,11 @@
     position: relative;
 }
 
+.welcome-card.task-only .receipt-label[for="customer-name"],
+.welcome-card.task-only #customer-name {
+    display: none;
+}
+
 
 
 .receipt-header {
@@ -104,6 +109,23 @@
     color: rgba(40, 23, 0, 0.45);
     text-align: center;
     font-family: "lacquer", cursive;
+}
+
+.task-name {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid rgba(40, 23, 0, 0.18);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.6);
+    color: #301d01;
+    font-family: "Inter", sans-serif;
+    font-size: 1rem;
+    outline: none;
+}
+
+.task-name::placeholder {
+    color: rgba(40, 23, 0, 0.45);
 }
 
 .drink-choice {
@@ -201,10 +223,94 @@
     gap: 1rem;
 }
 
+.current-task {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: min(560px, calc(100% - 2rem));
+    margin: 0.5rem 0 0.25rem;
+    padding: 0.65rem 1rem 0.35rem;
+    border-top: 3px solid #412b18;
+    color: #281700;
+    text-align: center;
+    max-height: 5rem;
+    overflow: hidden;
+    opacity: 1;
+    transform: translateY(0);
+    transition: max-height 0.3s ease, margin 0.3s ease, padding 0.3s ease, border-width 0.3s ease, opacity 0.25s ease, transform 0.3s ease;
+}
+
+.current-task.is-hidden {
+    max-height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-top-width: 0;
+    opacity: 0;
+    transform: translateY(-0.4rem);
+    pointer-events: none;
+}
+
+.current-task-label {
+    color: rgba(40, 23, 0, 0.55);
+    font-family: "Inter", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+#current-task-name {
+    min-width: 0;
+    overflow: hidden;
+    font-family: "Lacquer", cursive;
+    font-size: 1.35rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.new-task-button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #b06f38;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 0.75rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+.new-task-button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
 .timer {
     font-size: 9rem;
     color: #3E2511;
     text-align: center;
+}
+
+@media (max-width: 600px) {
+    .current-task {
+        align-items: center;
+        width: min(100% - 2rem, 560px);
+    }
+
+    #current-task-name {
+        width: 100%;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .current-task {
+        transition: none;
+    }
 }
 
 .btn {

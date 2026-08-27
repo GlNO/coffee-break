@@ -165,6 +165,7 @@ main {
 .summary-value {
     color: #281700;
     font-family: "Lacquer", cursive;
+    text-transform: lowercase;
     font-size: 1.5rem;
 }
 
@@ -172,7 +173,7 @@ main {
 .collection-date {
     color: rgba(40, 23, 0, 0.65);
     font-family: "Inter", sans-serif;
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 .collection-heading {
@@ -193,7 +194,7 @@ main {
 
 .collection-item {
     display: grid;
-    grid-template-columns: 2rem 76px 1fr auto;
+    grid-template-columns: 2rem 76px minmax(130px, 1fr) minmax(150px, 1.5fr) auto;
     align-items: center;
     gap: 1rem;
     min-height: 84px;
@@ -219,6 +220,15 @@ main {
 .collection-drink-name {
     font-family: "Lacquer", cursive;
     font-size: 1.35rem;
+}
+
+.collection-task {
+    overflow: hidden;
+    color: rgba(40, 23, 0, 0.68);
+    font-family: "Inter", sans-serif;
+    font-size: 0.9rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 @media (max-width: 600px) {
@@ -249,5 +259,10 @@ main {
     .collection-date {
         grid-column: 3;
         margin-top: -0.5rem;
+    }
+
+    .collection-task {
+        grid-column: 3;
+        grid-row: 2;
     }
 }

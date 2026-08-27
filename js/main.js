@@ -6,7 +6,10 @@ const welcomeOverlay = document.querySelector("#welcome-overlay");
 const welcomeCard = document.querySelector("#welcome-card");
 const welcomeButton = document.querySelector("#welcome-button");
 const customerNameInput = document.querySelector("#customer-name");
+const taskInput = document.querySelector("#task-name");
 const drinkInputs = document.querySelectorAll('input[name="drink"]');
+const currentTask = document.querySelector("#current-task");
+const currentTaskName = document.querySelector("#current-task-name");
 const rewardLayer = document.querySelector("#reward-layer");
 
 
@@ -18,6 +21,7 @@ const completedSound = new Audio("./assets/audio/completed.mp3");
 
 const STORAGE_KEY = "coffee-break-customer-name";
 const COLLECTION_STORAGE_KEY = "coffee-break-collection";
+const TASK_STORAGE_KEY = "coffee-break-task";
 const DEFAULT_DRINK = "cappucino";
 
 const FOCUS_DURATION = 25 * 60;
@@ -62,6 +66,7 @@ function highlightSelectedMode() {
 function updateCurrentMode(mode) {
     currentMode = mode;
     highlightSelectedMode();
+    updateCurrentTask();
 
     clearInterval(timerInterval);
     timerInterval = null;
@@ -76,7 +81,8 @@ function updateCurrentMode(mode) {
 function spawnRewardCup() {
     const collection = JSON.parse(localStorage.getItem(COLLECTION_STORAGE_KEY) || "[]");
     const selectedDrink = localStorage.getItem("coffee-break-drink") || DEFAULT_DRINK;
-    collection.push({ drink: selectedDrink, earnedAt: new Date().toISOString() });
+    const task = localStorage.getItem(TASK_STORAGE_KEY) || "";
+    collection.push({ drink: selectedDrink, task, earnedAt: new Date().toISOString() });
     localStorage.setItem(COLLECTION_STORAGE_KEY, JSON.stringify(collection));
 
     if (!rewardLayer) return;
@@ -301,22 +307,34 @@ function updateSettingsButtonLabel() {
     }     
 }
 
+function updateCurrentTask() {
+    const task = localStorage.getItem(TASK_STORAGE_KEY);
+    currentTask.classList.toggle("is-hidden", currentMode !== "focus");
+    currentTaskName.textContent = task || "No task set";
+}
+
 window.addEventListener("navbar-loaded", updateSettingsButtonLabel);
 
 function submitCustomerName() {
     const name = customerNameInput.value.trim();
+    const isTaskOnly = welcomeCard.classList.contains("task-only");
 
-    if (!name) {
+    if (!isTaskOnly && !name) {
         customerNameInput.focus();
         return;
     }
 
-    localStorage.setItem(STORAGE_KEY, name);
+    if (!isTaskOnly) {
+        localStorage.setItem(STORAGE_KEY, name);
+    }
+    localStorage.setItem(TASK_STORAGE_KEY, taskInput.value.trim());
     const selectedDrink = document.querySelector('input[name="drink"]:checked')?.value || DEFAULT_DRINK;
     localStorage.setItem("coffee-break-drink", selectedDrink);
     welcomeOverlay.style.display = "none";
+    welcomeCard.classList.remove("task-only");
     continueSound.play();
     updateSettingsButtonLabel();
+    updateCurrentTask();
 }
 
 welcomeButton.addEventListener("click", submitCustomerName);
@@ -331,12 +349,23 @@ customerNameInput.addEventListener("keydown", (event) => {
 document.addEventListener("click", (event) => {
     const appNameLink = event.target.closest(".app-name");
     const settingsButton = event.target.closest("#settings-button");
+    const newTaskButton = event.target.closest("#new-task-button");
+
+    if (newTaskButton) {
+        welcomeCard.classList.add("task-only");
+        taskInput.value = "";
+        welcomeOverlay.style.display = "flex";
+        taskInput.focus();
+        return;
+    }
 
     if (settingsButton) {
+        welcomeCard.classList.remove("task-only");
         const savedDrink = localStorage.getItem("coffee-break-drink") || DEFAULT_DRINK;
         const selectedInput = document.querySelector(`input[name="drink"][value="${savedDrink}"]`);
 
         if (selectedInput) selectedInput.checked = true;
+        taskInput.value = localStorage.getItem(TASK_STORAGE_KEY) || "";
         welcomeOverlay.style.display = "flex";
         customerNameInput.value = localStorage.getItem(STORAGE_KEY) || "";
         customerNameInput.focus();
@@ -345,8 +374,10 @@ document.addEventListener("click", (event) => {
 
     if (appNameLink) {
         event.preventDefault();
+        welcomeCard.classList.remove("task-only");
         localStorage.removeItem(STORAGE_KEY);
         localStorage.removeItem("coffee-break-drink");
+        localStorage.removeItem(TASK_STORAGE_KEY);
         welcomeOverlay.style.display = "flex";
         customerNameInput.value = "";
         customerNameInput.focus();
@@ -363,6 +394,7 @@ if (savedName) {
 }
 
 updateSettingsButtonLabel();
+updateCurrentTask();
 
 updateTimerDisplay();
 updateButtonState();
