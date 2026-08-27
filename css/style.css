@@ -279,3 +279,33 @@ footer {
     font-family: "Inter", sans-serif;
     font-size: 0.75rem;
 }
+
+@media (max-width: 600px) {
+    .navbar {
+        width: calc(100% - 2rem);
+        box-sizing: border-box;
+        padding: 0.8rem 0;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .navbar .app-name {
+        font-size: 2rem;
+        line-height: 1.1;
+    }
+
+    .navbar a,
+    .nav-links button {
+        font-size: 1rem;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.35rem 0.75rem;
+    }
+
+    footer {
+        padding: 1rem;
+    }
+}

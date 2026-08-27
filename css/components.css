@@ -540,6 +540,84 @@
     animation: tabSlide 0.20s ease;
 }
 
+@media (max-width: 600px) {
+    .timer-section {
+        width: 100%;
+        gap: 0.65rem;
+    }
+
+    .welcome-card {
+        width: calc(100vw - 2rem);
+        box-sizing: border-box;
+        padding: 1.1rem 0.9rem 1rem;
+        gap: 0.7rem;
+    }
+
+    .receipt-brand {
+        font-size: 1.8rem;
+    }
+
+    .receipt-subtitle {
+        font-size: 1rem;
+    }
+
+    .customer-name {
+        font-size: 2.2rem;
+    }
+
+    .drink-choice {
+        gap: 0.3rem;
+    }
+
+    .drink-option {
+        padding: 0.4rem 0.1rem;
+        font-size: 0.7rem;
+    }
+
+    .qr-button,
+    .qr-button img {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .timer {
+        font-size: clamp(4.5rem, 25vw, 7rem);
+    }
+
+    .btn {
+        width: calc(100% - 2rem);
+        min-width: 0;
+        box-sizing: border-box;
+        margin: 0.8rem 1rem;
+        padding: 0.85rem 1rem;
+        font-size: 1.5rem;
+    }
+
+    .mode-selector {
+        width: calc(100% - 2rem);
+        box-sizing: border-box;
+        margin-bottom: 1rem;
+        padding: 0.45rem;
+        border-radius: 1rem;
+    }
+
+    .mode-button {
+        flex: 1 1 100%;
+        width: 100%;
+        min-width: 0;
+        padding: 0.6rem 0.5rem;
+    }
+
+    .dev-tools {
+        right: 0.5rem;
+        bottom: 0.5rem;
+    }
+
+    .dev-panel {
+        width: min(190px, calc(100vw - 1rem));
+    }
+}
+
 .mode-button:active,
 .mode-button.is-active:active {
     transform: translateY(1px);
