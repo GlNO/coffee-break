@@ -12,6 +12,16 @@ function loadComponent(id, file) {
         .then(data => {
             document.getElementById(id).innerHTML = data;
 
+            const isCollectionsPage = window.location.pathname.includes("/pages/");
+            const homePath = isCollectionsPage ? "../index.html" : "./index.html";
+            const collectionsPath = isCollectionsPage ? "./collections.html" : "./pages/collections.html";
+            const appNameLink = document.querySelector(".app-name");
+            const navLinks = document.querySelectorAll(".nav-links a");
+
+            if (appNameLink) appNameLink.href = homePath;
+            if (navLinks[0]) navLinks[0].href = homePath;
+            if (navLinks[1]) navLinks[1].href = collectionsPath;
+
             const currentPath = window.location.pathname.replace(/\\/g, "/");
             const currentPage = currentPath.endsWith("/") ? "/index.html" : currentPath;
 
