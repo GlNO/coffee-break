@@ -11,6 +11,7 @@ function loadComponent(id, file) {
         })
         .then(data => {
             document.getElementById(id).innerHTML = data;
+            window.dispatchEvent(new Event("navbar-loaded"));
         })
         .catch(error => {
             console.error(error);

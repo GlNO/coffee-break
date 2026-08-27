@@ -6,7 +6,6 @@ const welcomeOverlay = document.querySelector("#welcome-overlay");
 const welcomeCard = document.querySelector("#welcome-card");
 const welcomeButton = document.querySelector("#welcome-button");
 const customerNameInput = document.querySelector("#customer-name");
-const settingsButton = document.querySelector("#settings-button");
 const rewardLayer = document.querySelector("#reward-layer");
 
 
@@ -283,6 +282,7 @@ function formatNameForDisplay(value) {
 }
 
 function updateSettingsButtonLabel() {
+    const settingsButton = document.querySelector("#settings-button");
     const savedName = localStorage.getItem(STORAGE_KEY);
     const displayName = formatNameForDisplay(savedName);
 
@@ -290,8 +290,10 @@ function updateSettingsButtonLabel() {
         settingsButton.textContent = `Hi, ${displayName}`;
     } else if (settingsButton) {
         settingsButton.textContent = "Hi there!";
-    }
+    }     
 }
+
+window.addEventListener("navbar-loaded", updateSettingsButtonLabel);
 
 function submitCustomerName() {
     const name = customerNameInput.value.trim();
