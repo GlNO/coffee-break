@@ -289,6 +289,160 @@
     outline-offset: 3px;
 }
 
+.daily-focus-summary {
+    margin: 0.25rem 0 0;
+    color: rgba(40, 23, 0, 0.65);
+    font-family: "Inter", sans-serif;
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.dev-tools {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 2100;
+    display: grid;
+    justify-items: end;
+    gap: 0.5rem;
+    font-family: "Inter", sans-serif;
+}
+
+.dev-button {
+    padding: 0.5rem 0.7rem;
+    border: 1px solid rgba(40, 23, 0, 0.35);
+    border-radius: 4px;
+    background: #fcf8f3;
+    color: #281700;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+.dev-panel {
+    display: grid;
+    gap: 0.45rem;
+    width: 190px;
+    padding: 0.75rem;
+    border: 1px solid rgba(40, 23, 0, 0.25);
+    background: #fcf8f3;
+    box-shadow: 0 8px 20px rgba(40, 23, 0, 0.16);
+}
+
+.dev-panel[hidden] {
+    display: none;
+}
+
+.dev-panel-title {
+    color: rgba(40, 23, 0, 0.6);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.dev-panel button {
+    padding: 0.55rem;
+    border: 1px solid rgba(40, 23, 0, 0.2);
+    background: transparent;
+    color: #281700;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 0.75rem;
+    text-align: left;
+}
+
+.completion-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2200;
+    display: grid;
+    gap: 0.35rem;
+    width: min(360px, calc(100% - 2rem));
+    padding: .95rem 1.2rem;
+    border-top: 4px solid #28190d;
+    background: #fcf8f3;
+    box-shadow: 0 14px 30px rgba(40, 23, 0, 0.18);
+    text-align: center;
+    transform: translate(-50%, -50%);
+    animation: completionPopupIn 0.35s ease-out both;
+}
+
+.completion-popup[hidden] {
+    display: none;
+}
+
+.completion-popup.is-closing {
+    animation: completionPopupOut 0.25s ease-in both;
+}
+
+.completion-kicker {
+    color: rgba(40, 23, 0, 0.55);
+    font-family: "Inter", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.completion-popup strong {
+    color: #281700;
+    font-family: "Lacquer", cursive;
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+.completion-popup button {
+    justify-self: center;
+    margin-top: 0.3rem;
+    border: 0;
+    background: transparent;
+    color: #382211;
+    cursor: pointer;
+    font-family: "Inter", sans-serif;
+    font-size: 0.75rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+@keyframes completionPopupIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, calc(-50% - 0.75rem));
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes completionPopupOut {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, calc(-50% - 0.5rem));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .completion-popup,
+    .completion-popup.is-closing {
+        animation: none;
+    }
+}
+
+.dev-button:focus-visible,
+.dev-panel button:focus-visible {
+    outline: 2px solid #b06f38;
+    outline-offset: 2px;
+}
+
 .timer {
     font-size: 9rem;
     color: #3E2511;

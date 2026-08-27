@@ -10,7 +10,12 @@ const taskInput = document.querySelector("#task-name");
 const drinkInputs = document.querySelectorAll('input[name="drink"]');
 const currentTask = document.querySelector("#current-task");
 const currentTaskName = document.querySelector("#current-task-name");
+const dailyFocusSummary = document.querySelector("#daily-focus-summary");
 const rewardLayer = document.querySelector("#reward-layer");
+const devButton = document.querySelector("#dev-button");
+const devPanel = document.querySelector("#dev-panel");
+const devCompleteButton = document.querySelector("#dev-complete-button");
+const devResetButton = document.querySelector("#dev-reset-button");
 
 
 const clickSound = new Audio("./assets/audio/click.wav");
@@ -31,6 +36,8 @@ let isRunning = false;
 let isPaused = false;
 let timerInterval = null;
 let coffeePourPlayed = false;
+let completionPopupTimeout = null;
+let completionPopupCloseTimeout = null;
 
 // timer display
 
@@ -38,8 +45,8 @@ let coffeePourPlayed = false;
 const modeButtons = document.querySelectorAll(".mode-button");
 
 const defaultDurations = {
-    // focus: 25 * 60,
-    focus: 7,
+    focus: 25 * 60,
+    // focus: 7,
     shortBreak: 5 * 60,
     longBreak: 15 * 60,
 };
@@ -82,8 +89,14 @@ function spawnRewardCup() {
     const collection = JSON.parse(localStorage.getItem(COLLECTION_STORAGE_KEY) || "[]");
     const selectedDrink = localStorage.getItem("coffee-break-drink") || DEFAULT_DRINK;
     const task = localStorage.getItem(TASK_STORAGE_KEY) || "";
-    collection.push({ drink: selectedDrink, task, earnedAt: new Date().toISOString() });
+        collection.push({
+            drink: selectedDrink,
+            task,
+            focusSeconds: durations.focus,
+            earnedAt: new Date().toISOString()
+        });
     localStorage.setItem(COLLECTION_STORAGE_KEY, JSON.stringify(collection));
+    updateDailyFocusSummary();
 
     if (!rewardLayer) return;
 
@@ -225,17 +238,21 @@ function startTimer() {
 
             timeRemaining--;
             updateTimerDisplay();
+            updateDailyFocusSummary();
 
             if (timeRemaining === 0) {
                 clearInterval(timerInterval);
                 timerInterval = null;
                 isRunning = false;
                 isPaused = false;
+                const completedMode = currentMode;
                 completedSound.play();
 
-                if (currentMode === "focus") {
+                if (completedMode === "focus") {
                     spawnRewardCup();
                 }
+
+                showCompletionPopup(completedMode);
 
                 moveToNextMode();
             }
@@ -258,6 +275,55 @@ function finishTimer() {
     isPaused = false;
     timeRemaining = 0;
     updateTimerDisplay();
+    updateButtonState();
+}
+
+function showCompletionPopup(mode) {
+    const messages = {
+        focus: "Well done! Your focus session is complete.",
+        shortBreak: "Nice work! Take a little moment to recharge.",
+        longBreak: "Great job! Time to slow down and recharge."
+    };
+
+    const completionPopup = document.querySelector("#completion-popup");
+    const completionMessage = document.querySelector("#completion-message");
+    if (!completionPopup || !completionMessage) return;
+
+    clearTimeout(completionPopupTimeout);
+    clearTimeout(completionPopupCloseTimeout);
+    completionPopup.classList.remove("is-closing");
+    completionMessage.textContent = messages[mode];
+    completionPopup.hidden = false;
+    completionPopupTimeout = setTimeout(() => {
+        hideCompletionPopup();
+    }, 3000);
+}
+
+function hideCompletionPopup() {
+    const completionPopup = document.querySelector("#completion-popup");
+    if (!completionPopup || completionPopup.hidden) return;
+
+    clearTimeout(completionPopupTimeout);
+    completionPopup.classList.add("is-closing");
+    clearTimeout(completionPopupCloseTimeout);
+    completionPopupCloseTimeout = setTimeout(() => {
+        completionPopup.hidden = true;
+        completionPopup.classList.remove("is-closing");
+    }, 250);
+}
+
+function completeSessionForDev(mode) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    isRunning = false;
+    isPaused = false;
+    currentMode = mode;
+    highlightSelectedMode();
+    if (mode === "focus") {
+        spawnRewardCup();
+    }
+    showCompletionPopup(mode);
+    moveToNextMode();
     updateButtonState();
 }
 
@@ -313,6 +379,25 @@ function updateCurrentTask() {
     currentTaskName.textContent = task || "No task set";
 }
 
+function updateDailyFocusSummary() {
+    const today = new Date().toDateString();
+    const collection = JSON.parse(localStorage.getItem(COLLECTION_STORAGE_KEY) || "[]");
+    const completedFocusSeconds = collection
+        .filter((session) => session.earnedAt && new Date(session.earnedAt).toDateString() === today)
+        .reduce((total, session) => total + (session.focusSeconds || (session.focusMinutes || 0) * 60), 0);
+    const activeFocusSeconds = currentMode === "focus" && isRunning
+        ? Math.max(0, durations.focus - timeRemaining)
+        : 0;
+    const focusedMinutes = Math.floor((completedFocusSeconds + activeFocusSeconds) / 60);
+    const focusedHours = Math.floor(focusedMinutes / 60);
+    const remainingMinutes = focusedMinutes % 60;
+    const durationText = focusedHours > 0
+        ? `${focusedHours} hour${focusedHours === 1 ? "" : "s"}${remainingMinutes > 0 ? ` and ${remainingMinutes} minute${remainingMinutes === 1 ? "" : "s"}` : ""}`
+        : `${focusedMinutes} minute${focusedMinutes === 1 ? "" : "s"}`;
+
+    dailyFocusSummary.textContent = `You've focused for ${durationText} today.`;
+}
+
 window.addEventListener("navbar-loaded", updateSettingsButtonLabel);
 
 function submitCustomerName() {
@@ -347,7 +432,7 @@ customerNameInput.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("click", (event) => {
-    // const appNameLink = event.target.closest(".app-name");
+    const appNameLink = event.target.closest(".app-name");
     const settingsButton = event.target.closest("#settings-button");
     const newTaskButton = event.target.closest("#new-task-button");
 
@@ -395,6 +480,34 @@ if (savedName) {
 
 updateSettingsButtonLabel();
 updateCurrentTask();
+updateDailyFocusSummary();
 
 updateTimerDisplay();
 updateButtonState();
+
+devButton.addEventListener("click", () => {
+    const isOpen = !devPanel.hidden;
+    devPanel.hidden = isOpen;
+    devButton.setAttribute("aria-expanded", String(!isOpen));
+});
+
+devCompleteButton.addEventListener("click", () => completeSessionForDev("focus"));
+
+document.querySelector("#dev-complete-short-button").addEventListener("click", () => {
+    completeSessionForDev("shortBreak");
+});
+
+document.querySelector("#dev-complete-long-button").addEventListener("click", () => {
+    completeSessionForDev("longBreak");
+});
+
+devResetButton.addEventListener("click", () => {
+    localStorage.removeItem(COLLECTION_STORAGE_KEY);
+    updateDailyFocusSummary();
+});
+
+document.addEventListener("click", (event) => {
+    if (event.target.closest("#completion-close")) {
+        hideCompletionPopup();
+    }
+});

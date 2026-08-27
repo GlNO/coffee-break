@@ -107,11 +107,24 @@
                       <button id="new-task-button" class="new-task-button" type="button"> + New Task</button>
                   </div>
 
+                  <p class="daily-focus-summary" id="daily-focus-summary" aria-live="polite"></p>
+
             </div>
 
 
             <footer> CoffeeBreak by @syd.cgb | Aug 2026 </footer>
    </main>
+
+    <aside class="dev-tools" aria-label="Development tools">
+        <button class="dev-button" id="dev-button" type="button" aria-expanded="false" aria-controls="dev-panel">DEV</button>
+        <div class="dev-panel" id="dev-panel" hidden>
+            <span class="dev-panel-title">Test controls</span>
+            <button id="dev-complete-button" type="button">Complete focus session</button>
+            <button id="dev-complete-short-button" type="button">Complete short break</button>
+            <button id="dev-complete-long-button" type="button">Complete long break</button>
+            <button id="dev-reset-button" type="button">Reset collection</button>
+        </div>
+    </aside>
 
 <script src="./js/main.js"></script>
 <script src="./js/navbar.js"></script>
