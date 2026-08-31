@@ -45,7 +45,7 @@ const modeButtons = document.querySelectorAll(".mode-button");
 
 const defaultDurations = {
     focus: 25 * 60,
-    // focus: 7,
+    // focus: 7 
     shortBreak: 5 * 60,
     longBreak: 15 * 60,
 };
@@ -288,6 +288,14 @@ function startTimer() {
                 isRunning = false;
                 isPaused = false;
                 countdownEndTime = null;
+                const completedMode = currentMode;
+                completedSound.play();
+
+                if (completedMode === "focus") {
+                    spawnRewardCup();
+                }
+
+                showCompletionPopup(completedMode);
                 persistTimerState();
                 moveToNextMode();
                 return;
@@ -302,25 +310,6 @@ function startTimer() {
             updateTimerDisplay();
             updateDailyFocusSummary();
             persistTimerState();
-
-            if (timeRemaining === 0) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-                isRunning = false;
-                isPaused = false;
-                countdownEndTime = null;
-                const completedMode = currentMode;
-                completedSound.play();
-
-                if (completedMode === "focus") {
-                    spawnRewardCup();
-                }
-
-                showCompletionPopup(completedMode);
-                persistTimerState();
-
-                moveToNextMode();
-            }
         }, 250);
     }
 }
