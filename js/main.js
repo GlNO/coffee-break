@@ -24,6 +24,7 @@ const completedSound = new Audio("./assets/audio/completed.mp3");
 const STORAGE_KEY = "coffee-break-customer-name";
 const COLLECTION_STORAGE_KEY = "coffee-break-collection";
 const TASK_STORAGE_KEY = "coffee-break-task";
+const TIMER_STORAGE_KEY = "coffee-break-timer-state";
 const DEFAULT_DRINK = "cappucino";
 
 const FOCUS_DURATION = 25 * 60;
@@ -32,6 +33,7 @@ let timeRemaining = FOCUS_DURATION;
 let isRunning = false;
 let isPaused = false;
 let timerInterval = null;
+let countdownEndTime = null;
 let coffeePourPlayed = false;
 let completionPopupTimeout = null;
 let completionPopupCloseTimeout = null;
@@ -67,6 +69,57 @@ function highlightSelectedMode() {
     });
 }
 
+function persistTimerState() {
+    const state = {
+        currentMode,
+        timeRemaining,
+        isRunning,
+        isPaused,
+        countdownEndTime
+    };
+
+    localStorage.setItem(TIMER_STORAGE_KEY, JSON.stringify(state));
+}
+
+function restoreTimerState() {
+    const savedState = localStorage.getItem(TIMER_STORAGE_KEY);
+    if (!savedState) return;
+
+    try {
+        const state = JSON.parse(savedState);
+        if (!state || typeof state !== "object") return;
+
+        const recoveredMode = state.currentMode && durations[state.currentMode] ? state.currentMode : "focus";
+        currentMode = recoveredMode;
+        highlightSelectedMode();
+        timeRemaining = Math.max(0, Number(state.timeRemaining) || durations[recoveredMode]);
+        isRunning = Boolean(state.isRunning);
+        isPaused = Boolean(state.isPaused);
+        countdownEndTime = typeof state.countdownEndTime === "number" ? state.countdownEndTime : null;
+
+        if (countdownEndTime && isRunning) {
+            const remainingSeconds = Math.max(0, Math.ceil((countdownEndTime - Date.now()) / 1000));
+            timeRemaining = remainingSeconds;
+        }
+
+        if (timeRemaining <= 0 && isRunning) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            isRunning = false;
+            isPaused = false;
+            timeRemaining = durations[currentMode];
+            countdownEndTime = null;
+        }
+
+        updateCurrentTask();
+        updateTimerDisplay();
+        updateButtonState();
+    } catch (error) {
+        console.warn("Unable to restore timer state:", error);
+        localStorage.removeItem(TIMER_STORAGE_KEY);
+    }
+}
+
 function updateCurrentMode(mode) {
     currentMode = mode;
     highlightSelectedMode();
@@ -77,9 +130,11 @@ function updateCurrentMode(mode) {
     isRunning = false;
     isPaused = false;
     coffeePourPlayed = false;
+    countdownEndTime = null;
     timeRemaining = durations[currentMode];
     updateTimerDisplay();
     updateButtonState();
+    persistTimerState();
 }
 
 function spawnRewardCup() {
@@ -215,14 +270,25 @@ function startTimer() {
     if (!isRunning) {
         isRunning = true;
         isPaused = false;
+        countdownEndTime = Date.now() + timeRemaining * 1000;
         updateButtonState();
+        persistTimerState();
 
         timerInterval = setInterval(function () {
+            if (!countdownEndTime) {
+                countdownEndTime = Date.now() + timeRemaining * 1000;
+            }
+
+            const remainingSeconds = Math.max(0, Math.ceil((countdownEndTime - Date.now()) / 1000));
+            timeRemaining = remainingSeconds;
+
             if (timeRemaining <= 0) {
                 clearInterval(timerInterval);
                 timerInterval = null;
                 isRunning = false;
                 isPaused = false;
+                countdownEndTime = null;
+                persistTimerState();
                 moveToNextMode();
                 return;
             }
@@ -233,15 +299,16 @@ function startTimer() {
                 coffeePourPlayed = true;
             }
 
-            timeRemaining--;
             updateTimerDisplay();
             updateDailyFocusSummary();
+            persistTimerState();
 
             if (timeRemaining === 0) {
                 clearInterval(timerInterval);
                 timerInterval = null;
                 isRunning = false;
                 isPaused = false;
+                countdownEndTime = null;
                 const completedMode = currentMode;
                 completedSound.play();
 
@@ -250,10 +317,11 @@ function startTimer() {
                 }
 
                 showCompletionPopup(completedMode);
+                persistTimerState();
 
                 moveToNextMode();
             }
-        }, 1000);
+        }, 250);
     }
 }
 
@@ -262,7 +330,9 @@ function pauseTimer() {
     timerInterval = null;
     isRunning = false;
     isPaused = true;
+    countdownEndTime = null;
     updateButtonState();
+    persistTimerState();
 }
 
 function finishTimer() {
@@ -270,9 +340,11 @@ function finishTimer() {
     timerInterval = null;
     isRunning = false;
     isPaused = false;
+    countdownEndTime = null;
     timeRemaining = 0;
     updateTimerDisplay();
     updateButtonState();
+    persistTimerState();
 }
 
 function showCompletionPopup(mode) {
@@ -396,6 +468,17 @@ function updateDailyFocusSummary() {
 }
 
 window.addEventListener("navbar-loaded", updateSettingsButtonLabel);
+document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && !isRunning && localStorage.getItem(TIMER_STORAGE_KEY)) {
+        restoreTimerState();
+    }
+    if (!document.hidden && isRunning && countdownEndTime) {
+        timeRemaining = Math.max(0, Math.ceil((countdownEndTime - Date.now()) / 1000));
+        updateTimerDisplay();
+        updateDailyFocusSummary();
+        persistTimerState();
+    }
+});
 
 function submitCustomerName() {
     const name = customerNameInput.value.trim();
@@ -475,6 +558,7 @@ if (savedName) {
     welcomeOverlay.style.display = "flex";
 }
 
+restoreTimerState();
 updateSettingsButtonLabel();
 updateCurrentTask();
 updateDailyFocusSummary();
