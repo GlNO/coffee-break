@@ -1,4 +1,4 @@
-## Coffee<br>
+## CoffeeBreak ☕
 A Pomodoro-inspired focus timer where every completed session brews you a virtual drink. Set a task, start the timer, and watch your focused time turn into a freshly "brewed" coffee, or a chosen drink in particular. 
 
 🔗 Live demo: https://glno.github.io/coffee-break/
